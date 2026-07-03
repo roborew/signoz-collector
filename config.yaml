@@ -58,12 +58,14 @@ processors:
     spike_limit_mib: ${env:MEMORY_LIMITER_SPIKE_MIB:-800}
 
 exporters:
-  otlp:
+  # OTLP/HTTP exporter. Required when sending through Cloudflare (HTTPS on 443).
+  # SIGNOZ_OTLP_ENDPOINT must be a full URL, e.g. https://otel.roborew.xyz
+  # (the collector appends /v1/traces, /v1/metrics, /v1/logs). TLS comes from the
+  # https:// scheme, so no insecure flag is needed for the Cloudflare path.
+  otlphttp:
     endpoint: ${env:SIGNOZ_OTLP_ENDPOINT}
     headers:
       signoz-ingestion-key: ${env:SIGNOZ_INGESTION_KEY:-}
-    tls:
-      insecure: ${env:SIGNOZ_OTLP_INSECURE:-true}
 
 extensions:
   health_check:
@@ -79,12 +81,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [memory_limiter, resourcedetection, batch]
-      exporters: [otlp]
+      exporters: [otlphttp]
     metrics:
       receivers: [otlp, hostmetrics, docker_stats]
       processors: [memory_limiter, resourcedetection, batch]
-      exporters: [otlp]
+      exporters: [otlphttp]
     logs:
       receivers: [otlp, filelog]
       processors: [memory_limiter, resourcedetection, batch]
-      exporters: [otlp]
+      exporters: [otlphttp]

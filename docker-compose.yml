@@ -1,5 +1,6 @@
 # Coolify deployment: OpenTelemetry Collector for Docker host monitoring.
-# Deploy one instance per Docker host. Sends telemetry to SigNoz via OTLP/gRPC.
+# Deploy one instance per Docker host. Sends telemetry to SigNoz via OTLP/HTTP
+# (HTTPS on 443 through Cloudflare). SIGNOZ_OTLP_ENDPOINT must be a full https:// URL.
 # Set SIGNOZ_HOST (+ optional SIGNOZ_INGESTION_KEY for Cloud) in Coolify env UI.
 # Build pack: Docker Compose (uses this file by default).
 # network_mode: host is required for host metrics, Docker stats/logs, and OTLP listeners.
@@ -17,8 +18,7 @@ services:
     environment:
       # --- SigNoz connection (set in Coolify env UI) ---
       SIGNOZ_HOST: ${SIGNOZ_HOST:?Set SIGNOZ_HOST — your SigNoz server IP or hostname}
-      SIGNOZ_OTLP_PORT: ${SIGNOZ_OTLP_PORT:-4317}
-      SIGNOZ_OTLP_ENDPOINT: ${SIGNOZ_OTLP_ENDPOINT:-${SIGNOZ_HOST}:${SIGNOZ_OTLP_PORT:-4317}}
+      SIGNOZ_OTLP_ENDPOINT: ${SIGNOZ_OTLP_ENDPOINT:-https://${SIGNOZ_HOST}}
       SIGNOZ_INGESTION_KEY: ${SIGNOZ_INGESTION_KEY:-}
       SIGNOZ_OTLP_INSECURE: ${SIGNOZ_OTLP_INSECURE:-true}
       OTEL_RESOURCE_ATTRIBUTES: deployment.environment=${DEPLOYMENT_ENVIRONMENT:-production}
