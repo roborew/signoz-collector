@@ -1,0 +1,35 @@
+# Coolify deployment: OpenTelemetry Collector for Docker host monitoring.
+# Deploy one instance per Docker host. Sends telemetry to SigNoz via OTLP/gRPC.
+# Set SIGNOZ_HOST (+ optional SIGNOZ_INGESTION_KEY for Cloud) in Coolify env UI.
+# Build pack: Docker Compose (uses this file by default).
+# network_mode: host is required for host metrics, Docker stats/logs, and OTLP listeners.
+# Apps on the same host send OTLP to localhost:4317 (gRPC) or localhost:4318 (HTTP).
+# NOTE: Do not use YAML anchors (&/ *) — Coolify's compose preprocessor fails with
+# "no service selected" on cold deploys (https://github.com/coollabsio/coolify/issues/2705).
+
+services:
+  signoz-collection-agent:
+    image: otel/opentelemetry-collector-contrib:${OTEL_COLLECTOR_VERSION:-0.139.0}
+    container_name: signoz-collection-agent
+    restart: unless-stopped
+    user: "0:0"
+    network_mode: host
+    environment:
+      # --- SigNoz connection (set in Coolify env UI) ---
+      SIGNOZ_HOST: ${SIGNOZ_HOST:?Set SIGNOZ_HOST — your SigNoz server IP or hostname}
+      SIGNOZ_OTLP_PORT: ${SIGNOZ_OTLP_PORT:-4317}
+      SIGNOZ_OTLP_ENDPOINT: ${SIGNOZ_OTLP_ENDPOINT:-${SIGNOZ_HOST}:${SIGNOZ_OTLP_PORT:-4317}}
+      SIGNOZ_INGESTION_KEY: ${SIGNOZ_INGESTION_KEY:-}
+      SIGNOZ_OTLP_INSECURE: ${SIGNOZ_OTLP_INSECURE:-true}
+      OTEL_RESOURCE_ATTRIBUTES: deployment.environment=${DEPLOYMENT_ENVIRONMENT:-production}
+      HOSTMETRICS_INTERVAL: ${HOSTMETRICS_INTERVAL:-60s}
+      DOCKER_STATS_INTERVAL: ${DOCKER_STATS_INTERVAL:-10s}
+      DOCKER_STATS_API_VERSION: ${DOCKER_STATS_API_VERSION:-1.44}
+      FILELOG_START_AT: ${FILELOG_START_AT:-end}
+      MEMORY_LIMITER_LIMIT_MIB: ${MEMORY_LIMITER_LIMIT_MIB:-4000}
+      MEMORY_LIMITER_SPIKE_MIB: ${MEMORY_LIMITER_SPIKE_MIB:-800}
+    volumes:
+      - ./config.yaml:/etc/otelcol-contrib/config.yaml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/hostfs:ro
