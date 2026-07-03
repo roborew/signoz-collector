@@ -2,7 +2,9 @@
 # Deploy one instance per Docker host. Sends telemetry to SigNoz via OTLP/HTTP
 # (HTTPS on 443 through Cloudflare). SIGNOZ_OTLP_ENDPOINT must be a full https:// URL.
 # Set SIGNOZ_HOST (+ optional SIGNOZ_INGESTION_KEY for Cloud) in Coolify env UI.
-# Build pack: Docker Compose (uses this file by default).
+# Build pack: Docker Compose (uses this file by default). config.yaml is baked
+# into the image via the Dockerfile — do NOT bind-mount it (Coolify remaps
+# relative bind mounts to app storage where the file is missing, which fails).
 # network_mode: host is required for host metrics, Docker stats/logs, and OTLP listeners.
 # Apps on the same host send OTLP to localhost:4317 (gRPC) or localhost:4318 (HTTP).
 # NOTE: Do not use YAML anchors (&/ *) — Coolify's compose preprocessor fails with
@@ -10,7 +12,11 @@
 
 services:
   signoz-collection-agent:
-    image: otel/opentelemetry-collector-contrib:${OTEL_COLLECTOR_VERSION:-0.139.0}
+    build:
+      context: .
+      args:
+        OTEL_COLLECTOR_VERSION: ${OTEL_COLLECTOR_VERSION:-0.139.0}
+    image: signoz-collection-agent:${OTEL_COLLECTOR_VERSION:-0.139.0}
     container_name: signoz-collection-agent
     restart: unless-stopped
     user: "0:0"
@@ -29,7 +35,6 @@ services:
       MEMORY_LIMITER_LIMIT_MIB: ${MEMORY_LIMITER_LIMIT_MIB:-4000}
       MEMORY_LIMITER_SPIKE_MIB: ${MEMORY_LIMITER_SPIKE_MIB:-800}
     volumes:
-      - ./config.yaml:/etc/otelcol-contrib/config.yaml:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /:/hostfs:ro
