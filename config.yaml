@@ -32,16 +32,24 @@ receivers:
     # Promote Docker/Coolify labels to metric attributes so SigNoz can group by
     # stable app identity instead of Coolify's token-suffixed container.name.
     # Keys = Docker label names; values = attribute names in SigNoz.
-    # Verify labels on a host with:
+    #
+    # Coolify labels come from defaultLabels() (bootstrap/helpers/docker.php).
+    # Docs list a subset; source also sets resourceName/serviceName/environmentName.
+    # Prefer coolify.resourceName (stable app) over coolify.name (often deploy-suffixed).
+    # Prefer docker.compose.service for api/worker/beat within a compose stack.
+    # Verify on a host with:
     #   docker inspect <container> --format '{{json .Config.Labels}}'
     container_labels_to_metric_labels:
       com.docker.compose.project: docker.compose.project
       com.docker.compose.service: docker.compose.service
+      coolify.managed: coolify.managed
+      coolify.applicationId: coolify.applicationId
+      coolify.type: coolify.type
       coolify.name: coolify.name
-      coolify.serviceName: coolify.serviceName
       coolify.projectName: coolify.projectName
-      coolify.applicationName: coolify.applicationName
       coolify.resourceName: coolify.resourceName
+      coolify.serviceName: coolify.serviceName
+      coolify.environmentName: coolify.environmentName
     excluded_images:
       - signoz-collection-agent
       - /otel\/opentelemetry-collector.*/

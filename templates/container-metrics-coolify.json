@@ -1,5 +1,5 @@
 {
-  "description": "Docker container metrics for Coolify hosts. Groups by stable Coolify/Compose labels (not token-suffixed container.name). Requires collector container_labels_to_metric_labels mapping.",
+  "description": "Docker container metrics for Coolify hosts. Every panel groups by coolify.projectName (human-readable Coolify project) then coolify.resourceName (app) so each series shows which project a container belongs to. Requires collector container_labels_to_metric_labels mapping.",
   "layout": [
     {
       "h": 7,
@@ -107,16 +107,32 @@
       "textboxValue": "",
       "type": "QUERY"
     },
+    "a2000002-0002-4000-8000-000000000004": {
+      "allSelected": true,
+      "customValue": "",
+      "description": "Coolify project (coolify.projectName)",
+      "id": "a2000002-0002-4000-8000-000000000004",
+      "modificationUUID": "a2000002-0002-4000-8000-000000000014",
+      "multiSelect": true,
+      "name": "coolify.projectName",
+      "order": 1,
+      "queryValue": "SELECT DISTINCT JSONExtractString(labels, 'coolify.projectName')\nFROM signoz_metrics.distributed_time_series_v4_1day\nWHERE metric_name LIKE 'container_%' AND unix_milli >= now() - INTERVAL 1 DAY\nAND JSONExtractString(labels, 'coolify.projectName') != '';",
+      "selectedValue": "",
+      "showALLOption": true,
+      "sort": "ASC",
+      "textboxValue": "",
+      "type": "QUERY"
+    },
     "a2000002-0002-4000-8000-000000000001": {
       "allSelected": true,
       "customValue": "",
-      "description": "Stable Coolify app name (survives rolling updates)",
+      "description": "Stable Coolify app slug (coolify.resourceName; survives rolling updates)",
       "id": "a2000002-0002-4000-8000-000000000001",
       "modificationUUID": "a2000002-0002-4000-8000-000000000011",
       "multiSelect": true,
-      "name": "coolify.name",
-      "order": 1,
-      "queryValue": "SELECT DISTINCT JSONExtractString(labels, 'coolify.name')\nFROM signoz_metrics.distributed_time_series_v4_1day\nWHERE metric_name LIKE 'container_%' AND unix_milli >= now() - INTERVAL 1 DAY\nAND JSONExtractString(labels, 'coolify.name') != '';",
+      "name": "coolify.resourceName",
+      "order": 2,
+      "queryValue": "SELECT DISTINCT JSONExtractString(labels, 'coolify.resourceName')\nFROM signoz_metrics.distributed_time_series_v4_1day\nWHERE metric_name LIKE 'container_%' AND unix_milli >= now() - INTERVAL 1 DAY\nAND JSONExtractString(labels, 'coolify.resourceName') != '';",
       "selectedValue": "",
       "showALLOption": true,
       "sort": "ASC",
@@ -126,12 +142,12 @@
     "a2000002-0002-4000-8000-000000000002": {
       "allSelected": true,
       "customValue": "",
-      "description": "Docker Compose service name",
+      "description": "Docker Compose service name (api/worker/beat within a stack)",
       "id": "a2000002-0002-4000-8000-000000000002",
       "modificationUUID": "a2000002-0002-4000-8000-000000000012",
       "multiSelect": true,
       "name": "docker.compose.service",
-      "order": 2,
+      "order": 3,
       "queryValue": "SELECT DISTINCT JSONExtractString(labels, 'docker.compose.service')\nFROM signoz_metrics.distributed_time_series_v4_1day\nWHERE metric_name LIKE 'container_%' AND unix_milli >= now() - INTERVAL 1 DAY\nAND JSONExtractString(labels, 'docker.compose.service') != '';",
       "selectedValue": "",
       "showALLOption": true,
@@ -147,7 +163,7 @@
       "modificationUUID": "a2000002-0002-4000-8000-000000000013",
       "multiSelect": true,
       "name": "docker.compose.project",
-      "order": 3,
+      "order": 4,
       "queryValue": "SELECT DISTINCT JSONExtractString(labels, 'docker.compose.project')\nFROM signoz_metrics.distributed_time_series_v4_1day\nWHERE metric_name LIKE 'container_%' AND unix_milli >= now() - INTERVAL 1 DAY\nAND JSONExtractString(labels, 'docker.compose.project') != '';",
       "selectedValue": "",
       "showALLOption": true,
@@ -159,7 +175,7 @@
   "version": "v5",
   "widgets": [
     {
-      "description": "Per-app snapshot: group by coolify.name (stable) with current container.name for drill-down.",
+      "description": "Per-container snapshot: coolify.projectName \u2192 coolify.resourceName \u2192 docker.compose.service \u2192 container.name.",
       "fillSpans": false,
       "id": "a1000001-0001-4000-8000-000000000001",
       "isStacked": false,
@@ -177,10 +193,18 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 },
                 {
@@ -218,7 +242,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             },
             {
@@ -229,10 +253,18 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 },
                 {
@@ -270,7 +302,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             },
             {
@@ -281,10 +313,18 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 },
                 {
@@ -322,7 +362,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             }
           ],
@@ -371,11 +411,11 @@
       "softMin": 0,
       "thresholds": [],
       "timePreferance": "GLOBAL_TIME",
-      "title": "Apps overview (by coolify.name)",
+      "title": "Apps overview (project / app / container)",
       "yAxisUnit": "none"
     },
     {
-      "description": "CPU utilization ratio (0–1). Grouped by stable Coolify app name.",
+      "description": "CPU utilization ratio (0\u20131). Grouped by coolify.projectName / coolify.resourceName.",
       "fillSpans": false,
       "id": "51833c89-4160-4d46-9d64-0a8ee170bb8f",
       "isStacked": false,
@@ -393,17 +433,25 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 }
               ],
               "having": {
                 "expression": ""
               },
-              "legend": "{{coolify.name}}",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}}",
               "limit": null,
               "orderBy": [],
               "queryName": "A",
@@ -418,7 +466,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             }
           ],
@@ -464,7 +512,7 @@
       "yAxisUnit": "percentunit"
     },
     {
-      "description": "Memory percent of container limit. Grouped by coolify.name.",
+      "description": "Memory percent of container limit. Grouped by coolify.projectName / coolify.resourceName.",
       "fillSpans": false,
       "id": "2d3f90be-7944-4c08-b8a5-76f10624b12f",
       "isStacked": false,
@@ -482,17 +530,25 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 }
               ],
               "having": {
                 "expression": ""
               },
-              "legend": "{{coolify.name}}",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}}",
               "limit": null,
               "orderBy": [],
               "queryName": "A",
@@ -507,7 +563,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             }
           ],
@@ -553,7 +609,7 @@
       "yAxisUnit": "percent"
     },
     {
-      "description": "Working set vs memory limit — spot containers near OOM.",
+      "description": "Working set vs memory limit \u2014 spot containers near OOM.",
       "fillSpans": false,
       "id": "40a92643-1c74-428d-bec2-01aaf27579f2",
       "isStacked": false,
@@ -571,17 +627,25 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 }
               ],
               "having": {
                 "expression": ""
               },
-              "legend": "Usage",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}} usage",
               "limit": null,
               "orderBy": [],
               "queryName": "A",
@@ -596,7 +660,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             },
             {
@@ -607,17 +671,25 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 }
               ],
               "having": {
                 "expression": ""
               },
-              "legend": "Limit",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}} limit",
               "limit": null,
               "orderBy": [],
               "queryName": "B",
@@ -632,7 +704,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             }
           ],
@@ -640,13 +712,13 @@
             {
               "disabled": false,
               "expression": "A/1024/1024",
-              "legend": "Mem usage (MB)",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}} usage (MB)",
               "queryName": "F1"
             },
             {
               "disabled": false,
               "expression": "B/1024/1024/1024",
-              "legend": "Mem limit (GB)",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}} limit (GB)",
               "queryName": "F2"
             }
           ]
@@ -709,17 +781,25 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 }
               ],
               "having": {
                 "expression": ""
               },
-              "legend": "{{coolify.name}}",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}}",
               "limit": null,
               "orderBy": [],
               "queryName": "A",
@@ -734,7 +814,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             }
           ],
@@ -798,17 +878,25 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 }
               ],
               "having": {
                 "expression": ""
               },
-              "legend": "{{coolify.name}}",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}}",
               "limit": null,
               "orderBy": [],
               "queryName": "A",
@@ -823,7 +911,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             }
           ],
@@ -887,17 +975,25 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 }
               ],
               "having": {
                 "expression": ""
               },
-              "legend": "{{coolify.name}}",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}}",
               "limit": null,
               "orderBy": [],
               "queryName": "A",
@@ -912,7 +1008,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             }
           ],
@@ -958,7 +1054,7 @@
       "yAxisUnit": "binBps"
     },
     {
-      "description": "Dropped packets — early signal of network pressure.",
+      "description": "Dropped packets \u2014 early signal of network pressure.",
       "fillSpans": false,
       "id": "dc155385-43d7-4be6-b5a8-2c23263412de",
       "isStacked": false,
@@ -976,17 +1072,25 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 }
               ],
               "having": {
                 "expression": ""
               },
-              "legend": "RX dropped",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}} RX dropped",
               "limit": null,
               "orderBy": [],
               "queryName": "A",
@@ -1001,7 +1105,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             },
             {
@@ -1012,17 +1116,25 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 }
               ],
               "having": {
                 "expression": ""
               },
-              "legend": "TX dropped",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}} TX dropped",
               "limit": null,
               "orderBy": [],
               "queryName": "B",
@@ -1037,7 +1149,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             }
           ],
@@ -1101,10 +1213,18 @@
               "groupBy": [
                 {
                   "dataType": "string",
-                  "id": "coolify.name--string--tag--false",
+                  "id": "coolify.projectName--string--tag--false",
                   "isColumn": false,
                   "isJSON": false,
-                  "key": "coolify.name",
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "coolify.resourceName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.resourceName",
                   "type": "tag"
                 },
                 {
@@ -1119,7 +1239,7 @@
               "having": {
                 "expression": ""
               },
-              "legend": "Block IO",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}} {{operation}}",
               "limit": null,
               "orderBy": [],
               "queryName": "A",
@@ -1134,7 +1254,7 @@
                 }
               ],
               "filter": {
-                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+                "expression": "host.name IN $host.name AND coolify.projectName IN $coolify.projectName AND coolify.resourceName IN $coolify.resourceName AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
               }
             }
           ],
@@ -1142,7 +1262,7 @@
             {
               "disabled": false,
               "expression": "A/1024",
-              "legend": "Block IO (KB/s)",
+              "legend": "{{coolify.projectName}} / {{coolify.resourceName}} block IO (KB/s)",
               "queryName": "F1"
             }
           ]
