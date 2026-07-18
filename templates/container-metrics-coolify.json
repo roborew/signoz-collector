@@ -1,0 +1,1190 @@
+{
+  "description": "Docker container metrics for Coolify hosts. Groups by stable Coolify/Compose labels (not token-suffixed container.name). Requires collector container_labels_to_metric_labels mapping.",
+  "layout": [
+    {
+      "h": 7,
+      "i": "a1000001-0001-4000-8000-000000000001",
+      "moved": false,
+      "static": false,
+      "w": 12,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "h": 6,
+      "i": "51833c89-4160-4d46-9d64-0a8ee170bb8f",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 0,
+      "y": 7
+    },
+    {
+      "h": 6,
+      "i": "2d3f90be-7944-4c08-b8a5-76f10624b12f",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 6,
+      "y": 7
+    },
+    {
+      "h": 6,
+      "i": "40a92643-1c74-428d-bec2-01aaf27579f2",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 0,
+      "y": 13
+    },
+    {
+      "h": 6,
+      "i": "a1000001-0001-4000-8000-000000000002",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 6,
+      "y": 13
+    },
+    {
+      "h": 6,
+      "i": "1c88d324-ee9c-4f05-a02d-18075e12a68c",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 0,
+      "y": 19
+    },
+    {
+      "h": 6,
+      "i": "74e59cc0-83fd-46be-9990-55a147a29385",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 6,
+      "y": 19
+    },
+    {
+      "h": 6,
+      "i": "dc155385-43d7-4be6-b5a8-2c23263412de",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 0,
+      "y": 25
+    },
+    {
+      "h": 6,
+      "i": "93c4afeb-0168-4c7b-864b-0a9678970958",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 6,
+      "y": 25
+    }
+  ],
+  "name": "",
+  "tags": [
+    "container",
+    "coolify",
+    "docker"
+  ],
+  "title": "Coolify Container Metrics",
+  "variables": {
+    "9d84cf1a-19be-4ac1-b267-750756484e75": {
+      "allSelected": true,
+      "customValue": "",
+      "description": "Docker host (from resourcedetection)",
+      "id": "9d84cf1a-19be-4ac1-b267-750756484e75",
+      "modificationUUID": "0e0245b9-bb06-417c-990c-8f552793a11e",
+      "multiSelect": true,
+      "name": "host.name",
+      "order": 0,
+      "queryValue": "SELECT DISTINCT JSONExtractString(labels, 'host.name')\nFROM signoz_metrics.distributed_time_series_v4_1day\nWHERE metric_name LIKE 'container_%' AND unix_milli >= now() - INTERVAL 1 DAY;",
+      "selectedValue": "",
+      "showALLOption": true,
+      "sort": "ASC",
+      "textboxValue": "",
+      "type": "QUERY"
+    },
+    "a2000002-0002-4000-8000-000000000001": {
+      "allSelected": true,
+      "customValue": "",
+      "description": "Stable Coolify app name (survives rolling updates)",
+      "id": "a2000002-0002-4000-8000-000000000001",
+      "modificationUUID": "a2000002-0002-4000-8000-000000000011",
+      "multiSelect": true,
+      "name": "coolify.name",
+      "order": 1,
+      "queryValue": "SELECT DISTINCT JSONExtractString(labels, 'coolify.name')\nFROM signoz_metrics.distributed_time_series_v4_1day\nWHERE metric_name LIKE 'container_%' AND unix_milli >= now() - INTERVAL 1 DAY\nAND JSONExtractString(labels, 'coolify.name') != '';",
+      "selectedValue": "",
+      "showALLOption": true,
+      "sort": "ASC",
+      "textboxValue": "",
+      "type": "QUERY"
+    },
+    "a2000002-0002-4000-8000-000000000002": {
+      "allSelected": true,
+      "customValue": "",
+      "description": "Docker Compose service name",
+      "id": "a2000002-0002-4000-8000-000000000002",
+      "modificationUUID": "a2000002-0002-4000-8000-000000000012",
+      "multiSelect": true,
+      "name": "docker.compose.service",
+      "order": 2,
+      "queryValue": "SELECT DISTINCT JSONExtractString(labels, 'docker.compose.service')\nFROM signoz_metrics.distributed_time_series_v4_1day\nWHERE metric_name LIKE 'container_%' AND unix_milli >= now() - INTERVAL 1 DAY\nAND JSONExtractString(labels, 'docker.compose.service') != '';",
+      "selectedValue": "",
+      "showALLOption": true,
+      "sort": "ASC",
+      "textboxValue": "",
+      "type": "QUERY"
+    },
+    "a2000002-0002-4000-8000-000000000003": {
+      "allSelected": true,
+      "customValue": "",
+      "description": "Docker Compose project name",
+      "id": "a2000002-0002-4000-8000-000000000003",
+      "modificationUUID": "a2000002-0002-4000-8000-000000000013",
+      "multiSelect": true,
+      "name": "docker.compose.project",
+      "order": 3,
+      "queryValue": "SELECT DISTINCT JSONExtractString(labels, 'docker.compose.project')\nFROM signoz_metrics.distributed_time_series_v4_1day\nWHERE metric_name LIKE 'container_%' AND unix_milli >= now() - INTERVAL 1 DAY\nAND JSONExtractString(labels, 'docker.compose.project') != '';",
+      "selectedValue": "",
+      "showALLOption": true,
+      "sort": "ASC",
+      "textboxValue": "",
+      "type": "QUERY"
+    }
+  },
+  "version": "v5",
+  "widgets": [
+    {
+      "description": "Per-app snapshot: group by coolify.name (stable) with current container.name for drill-down.",
+      "fillSpans": false,
+      "id": "a1000001-0001-4000-8000-000000000001",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "table",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "docker.compose.service--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "docker.compose.service",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "container.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "container.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "CPU %",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.cpu.utilization",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "avg",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "B",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "docker.compose.service--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "docker.compose.service",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "container.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "container.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "Mem %",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "B",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.memory.percent",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "avg",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "C",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "docker.compose.service--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "docker.compose.service",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "container.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "container.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "Mem bytes",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "C",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.memory.usage.total",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            }
+          ],
+          "queryFormulas": [
+            {
+              "disabled": false,
+              "expression": "C/1024/1024",
+              "legend": "Mem MB",
+              "queryName": "F1"
+            }
+          ]
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q1000001-0001-4000-8000-000000000001",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder"
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Apps overview (by coolify.name)",
+      "yAxisUnit": "none"
+    },
+    {
+      "description": "CPU utilization ratio (0–1). Grouped by stable Coolify app name.",
+      "fillSpans": false,
+      "id": "51833c89-4160-4d46-9d64-0a8ee170bb8f",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "{{coolify.name}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.cpu.utilization",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "avg",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "5e9d7611-6187-4b8e-9b3c-956aaed9a990",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder"
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "CPU utilization",
+      "yAxisUnit": "percentunit"
+    },
+    {
+      "description": "Memory percent of container limit. Grouped by coolify.name.",
+      "fillSpans": false,
+      "id": "2d3f90be-7944-4c08-b8a5-76f10624b12f",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "{{coolify.name}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.memory.percent",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "avg",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "fdfe12ae-6a8b-478f-b235-08ad40aa1495",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder"
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Memory percent",
+      "yAxisUnit": "percent"
+    },
+    {
+      "description": "Working set vs memory limit — spot containers near OOM.",
+      "fillSpans": false,
+      "id": "40a92643-1c74-428d-bec2-01aaf27579f2",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "table",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "Usage",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.memory.usage.total",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "max"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "B",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "Limit",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "B",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.memory.usage.limit",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "max"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            }
+          ],
+          "queryFormulas": [
+            {
+              "disabled": false,
+              "expression": "A/1024/1024",
+              "legend": "Mem usage (MB)",
+              "queryName": "F1"
+            },
+            {
+              "disabled": false,
+              "expression": "B/1024/1024/1024",
+              "legend": "Mem limit (GB)",
+              "queryName": "F2"
+            }
+          ]
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "f6ccb683-1b98-458f-b21d-6c8d2ed8bdad",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder"
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Mem usage / Mem limit",
+      "yAxisUnit": "none"
+    },
+    {
+      "description": "Memory working set over time (bytes).",
+      "fillSpans": false,
+      "id": "a1000001-0001-4000-8000-000000000002",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "{{coolify.name}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.memory.usage.total",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q1000001-0001-4000-8000-000000000002",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder"
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Memory usage (bytes)",
+      "yAxisUnit": "bytes"
+    },
+    {
+      "description": "Inbound network throughput.",
+      "fillSpans": false,
+      "id": "1c88d324-ee9c-4f05-a02d-18075e12a68c",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "{{coolify.name}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.network.io.usage.rx_bytes",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "316173e4-f499-4c5b-a5db-96c1c13e15ef",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder"
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Network bytes received",
+      "yAxisUnit": "binBps"
+    },
+    {
+      "description": "Outbound network throughput.",
+      "fillSpans": false,
+      "id": "74e59cc0-83fd-46be-9990-55a147a29385",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "{{coolify.name}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.network.io.usage.tx_bytes",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "d3b3760e-68e1-4122-84b6-ef9326a98587",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder"
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Network bytes sent",
+      "yAxisUnit": "binBps"
+    },
+    {
+      "description": "Dropped packets — early signal of network pressure.",
+      "fillSpans": false,
+      "id": "dc155385-43d7-4be6-b5a8-2c23263412de",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "table",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "RX dropped",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.network.io.usage.rx_dropped",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "sum"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "B",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "TX dropped",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "B",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.network.io.usage.tx_dropped",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "sum"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "d7981b41-3293-417d-aa8c-7aceade3d6f3",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder"
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Packets dropped",
+      "yAxisUnit": "none"
+    },
+    {
+      "description": "Block device I/O rate by operation (read/write).",
+      "fillSpans": false,
+      "id": "93c4afeb-0168-4c7b-864b-0a9678970958",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "table",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.name",
+                  "type": "tag"
+                },
+                {
+                  "dataType": "string",
+                  "id": "operation--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "operation",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "Block IO",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.blockio.io_service_bytes_recursive",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "sum"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name AND coolify.name IN $coolify.name AND docker.compose.service IN $docker.compose.service AND docker.compose.project IN $docker.compose.project"
+              }
+            }
+          ],
+          "queryFormulas": [
+            {
+              "disabled": false,
+              "expression": "A/1024",
+              "legend": "Block IO (KB/s)",
+              "queryName": "F1"
+            }
+          ]
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "1c986cc7-318b-4cd6-89d1-3c2d89bf9edb",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder"
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Block IO",
+      "yAxisUnit": "none"
+    }
+  ]
+}
