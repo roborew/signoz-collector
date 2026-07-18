@@ -29,6 +29,23 @@ receivers:
     api_version: ${env:DOCKER_STATS_API_VERSION:-1.44}
     collection_interval: ${env:DOCKER_STATS_INTERVAL:-10s}
     timeout: 20s
+    # Promote Docker/Coolify labels to metric attributes so SigNoz can group by
+    # stable app identity instead of Coolify's token-suffixed container.name.
+    # Keys = Docker label names; values = attribute names in SigNoz.
+    # Verify labels on a host with:
+    #   docker inspect <container> --format '{{json .Config.Labels}}'
+    container_labels_to_metric_labels:
+      com.docker.compose.project: docker.compose.project
+      com.docker.compose.service: docker.compose.service
+      coolify.name: coolify.name
+      coolify.serviceName: coolify.serviceName
+      coolify.projectName: coolify.projectName
+      coolify.applicationName: coolify.applicationName
+      coolify.resourceName: coolify.resourceName
+    excluded_images:
+      - signoz-collection-agent
+      - /otel\/opentelemetry-collector.*/
+      - /.*pause.*/
 
   filelog:
     include: [/var/lib/docker/containers/*/*-json.log]
