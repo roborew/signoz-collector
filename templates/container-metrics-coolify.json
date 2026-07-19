@@ -1,6 +1,42 @@
 {
-  "description": "Docker container metrics for Coolify hosts. Every panel groups by coolify.projectName (human-readable Coolify project) then coolify.resourceName (app) so each series shows which project a container belongs to. Requires collector container_labels_to_metric_labels mapping.",
+  "description": "Docker container metrics for Coolify hosts. Top row: host CPU/memory headroom (value) plus capacity pies (projects vs Available free capacity on the box). Detail panels group by project \u2192 resourceName \u2192 service \u2192 container.name. Requires collector container_labels_to_metric_labels mapping.",
   "layout": [
+    {
+      "h": 6,
+      "i": "b1000001-0001-4000-8000-000000000001",
+      "moved": false,
+      "static": false,
+      "w": 2,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "h": 6,
+      "i": "b1000001-0001-4000-8000-000000000002",
+      "moved": false,
+      "static": false,
+      "w": 2,
+      "x": 2,
+      "y": 0
+    },
+    {
+      "h": 6,
+      "i": "b1000001-0001-4000-8000-000000000003",
+      "moved": false,
+      "static": false,
+      "w": 4,
+      "x": 4,
+      "y": 0
+    },
+    {
+      "h": 6,
+      "i": "b1000001-0001-4000-8000-000000000004",
+      "moved": false,
+      "static": false,
+      "w": 4,
+      "x": 8,
+      "y": 0
+    },
     {
       "h": 7,
       "i": "a1000001-0001-4000-8000-000000000001",
@@ -8,7 +44,7 @@
       "static": false,
       "w": 12,
       "x": 0,
-      "y": 0
+      "y": 6
     },
     {
       "h": 6,
@@ -17,7 +53,7 @@
       "static": false,
       "w": 6,
       "x": 0,
-      "y": 7
+      "y": 13
     },
     {
       "h": 6,
@@ -26,7 +62,7 @@
       "static": false,
       "w": 6,
       "x": 6,
-      "y": 7
+      "y": 13
     },
     {
       "h": 6,
@@ -35,7 +71,7 @@
       "static": false,
       "w": 6,
       "x": 0,
-      "y": 13
+      "y": 19
     },
     {
       "h": 6,
@@ -44,7 +80,7 @@
       "static": false,
       "w": 6,
       "x": 6,
-      "y": 13
+      "y": 19
     },
     {
       "h": 6,
@@ -53,7 +89,7 @@
       "static": false,
       "w": 6,
       "x": 0,
-      "y": 19
+      "y": 25
     },
     {
       "h": 6,
@@ -62,7 +98,7 @@
       "static": false,
       "w": 6,
       "x": 6,
-      "y": 19
+      "y": 25
     },
     {
       "h": 6,
@@ -71,7 +107,7 @@
       "static": false,
       "w": 6,
       "x": 0,
-      "y": 25
+      "y": 31
     },
     {
       "h": 6,
@@ -80,7 +116,7 @@
       "static": false,
       "w": 6,
       "x": 6,
-      "y": 25
+      "y": 31
     }
   ],
   "name": "",
@@ -174,6 +210,588 @@
   },
   "version": "v5",
   "widgets": [
+    {
+      "description": "Host-level CPU utilization (non-idle / total). Shows how close the selected host is to full CPU.",
+      "fillSpans": false,
+      "id": "b1000001-0001-4000-8000-000000000001",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "value",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q2000001-0001-4000-8000-000000000001",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "system.cpu.time",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "(host.name IN $host.name AND state != 'idle')"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "B",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "B",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "system.cpu.time",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name"
+              }
+            }
+          ],
+          "queryFormulas": [
+            {
+              "disabled": false,
+              "expression": "A/B",
+              "legend": "",
+              "queryName": "F1"
+            }
+          ]
+        }
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Host CPU used",
+      "yAxisUnit": "percentunit"
+    },
+    {
+      "description": "Host memory used / total (excluding cache/buffers in numerator via state=used). Shows how close the host is to full RAM.",
+      "fillSpans": false,
+      "id": "b1000001-0001-4000-8000-000000000002",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "value",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q2000001-0001-4000-8000-000000000002",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "system.memory.usage",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "(host.name IN $host.name AND state = 'used')"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "B",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "B",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "system.memory.usage",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name"
+              }
+            }
+          ],
+          "queryFormulas": [
+            {
+              "disabled": false,
+              "expression": "A/B",
+              "legend": "",
+              "queryName": "F1"
+            }
+          ]
+        }
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Host memory used",
+      "yAxisUnit": "percentunit"
+    },
+    {
+      "fillSpans": false,
+      "id": "b1000001-0001-4000-8000-000000000003",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "CPU capacity (projects + available)",
+      "description": "Full host CPU capacity. Slices = Coolify projects (container CPU, 1.0 \u2248 1 core); Available = idle cores; Other = non-container system CPU. The Available gap is free headroom.",
+      "panelTypes": "pie",
+      "yAxisUnit": "none",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q2000001-0001-4000-8000-000000000003",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.projectName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "{{coolify.projectName}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.cpu.utilization",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "B",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "Available",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "B",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "system.cpu.time",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "(host.name IN $host.name AND state = 'idle')"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "C",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "C",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "system.cpu.time",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "D",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "D",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.cpu.utilization",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name"
+              }
+            }
+          ],
+          "queryFormulas": [
+            {
+              "disabled": false,
+              "expression": "C - B - D",
+              "legend": "Other (system)",
+              "queryName": "F1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fillSpans": false,
+      "id": "b1000001-0001-4000-8000-000000000004",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Memory capacity (projects + available)",
+      "description": "Full host RAM. Slices = Coolify projects (container working set); Available = free host memory; Other = non-container host usage (kernel, caches counted as used, etc.). On a 2 GiB box the whole pie is ~2 GiB \u2014 Available is the unused gap.",
+      "panelTypes": "pie",
+      "yAxisUnit": "bytes",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q2000001-0001-4000-8000-000000000004",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "coolify.projectName--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "coolify.projectName",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "{{coolify.projectName}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.memory.usage.total",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "B",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "Available",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "B",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "system.memory.usage",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "(host.name IN $host.name AND state = 'free')"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "C",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "C",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "system.memory.usage",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "(host.name IN $host.name AND state = 'used')"
+              }
+            },
+            {
+              "dataSource": "metrics",
+              "disabled": true,
+              "expression": "D",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "D",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "container.memory.usage.total",
+                  "temporality": null,
+                  "timeAggregation": "avg",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "host.name IN $host.name"
+              }
+            }
+          ],
+          "queryFormulas": [
+            {
+              "disabled": false,
+              "expression": "C - D",
+              "legend": "Other (system)",
+              "queryName": "F1"
+            }
+          ]
+        }
+      }
+    },
     {
       "description": "Per-container snapshot: coolify.projectName \u2192 coolify.resourceName \u2192 docker.compose.service \u2192 container.name.",
       "fillSpans": false,

@@ -6,7 +6,9 @@
 # into the image via the Dockerfile — do NOT bind-mount it (Coolify remaps
 # relative bind mounts to app storage where the file is missing, which fails).
 # network_mode: host is required for host metrics, Docker stats/logs, and OTLP listeners.
-# Apps on the same host send OTLP to localhost:4317 (gRPC) or localhost:4318 (HTTP).
+# App containers on the same host must NOT use localhost or Coolify service DNS —
+# they send OTLP to http://host.docker.internal:4318 with
+# extra_hosts: ["host.docker.internal:host-gateway"]. Full env contract: see README.md.
 # NOTE: Do not use YAML anchors (&/ *) — Coolify's compose preprocessor fails with
 # "no service selected" on cold deploys (https://github.com/coollabsio/coolify/issues/2705).
 
