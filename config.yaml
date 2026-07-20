@@ -67,6 +67,17 @@ receivers:
         add_metadata_from_filepath: false
 
 processors:
+  # GDPR / EU PII strip — runs before batch/memory_limiter. Same key set as
+  # the home ingester so neither layer leaks client IPs into ClickHouse.
+  redaction/pii:
+    allow_all_keys: false
+    blocked_key_patterns:
+      - ".*client\\.address.*"
+      - ".*client\\.ip.*"
+      - ".*net\\.sock\\.peer\\.addr.*"
+      - ".*http\\.client_ip.*"
+      - ".*http\\.x_forwarded_for.*"
+      - ".*forwarded\\.for.*"
   batch:
     send_batch_size: 1000
     timeout: 10s
@@ -105,13 +116,13 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [memory_limiter, resourcedetection, batch]
-      exporters: [otlphttp]
+      processors: [redaction/pii, memory_limiter, resourcedetection, batch]
+      exporters: [otlphttp] 
     metrics:
       receivers: [otlp, hostmetrics, docker_stats]
       processors: [memory_limiter, resourcedetection, batch]
       exporters: [otlphttp]
     logs:
       receivers: [otlp, filelog]
-      processors: [memory_limiter, resourcedetection, batch]
+      processors: [redaction/pii, memory_limiter, resourcedetection, batch]
       exporters: [otlphttp]
