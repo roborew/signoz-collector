@@ -31,30 +31,32 @@ gRPC on `:4317` is available if your SDK exports gRPC; this guide standardizes o
 
 Three places. Do not mix them.
 
-### Infisical (collector secrets)
+### Infisical (collector secrets + optional tuning)
 
-Store these in the collector Infisical project (names match runtime env exactly):
+Store these in the collector Infisical project (names match runtime env exactly). Prefer Infisical as the single place for collector config.
 
 | Variable | Required | Example | Role |
 | --- | --- | --- | --- |
 | `SIGNOZ_OTLP_ENDPOINT` | yes | `https://otel.roborew.xyz` | Where **this collector** exports (OTLP/HTTP base URL) |
 | `SIGNOZ_HOST` | yes | `otel.roborew.xyz` | Hostname / resource attribute |
 | `SIGNOZ_INGESTION_KEY` | no | _(empty)_ | SigNoz Cloud only; leave empty for self-hosted |
+| `HOSTMETRICS_INTERVAL`, `DOCKER_STATS_*`, `FILELOG_START_AT`, `MEMORY_LIMITER_*` | no | see `.env.example` | Optional; omit to use `config.yaml` defaults. If set in Infisical, they override those defaults. |
 
 ### Coolify (this collection-agent resource)
+
+Only these — Coolify lists compose `${VAR}` references in the env UI, so unused Infisical aliases are not in compose.
 
 | Variable | Required | Example | Role |
 | --- | --- | --- | --- |
 | `INFISICAL_PROJECT_ID` | yes | _(project ID)_ | Infisical project |
 | `INFISICAL_ENV` | yes | `prod` | Infisical env slug |
-| `INFISICAL_API_URL` or `INFISICAL_DOMAIN` | yes | `https://eu.infisical.com` | Infisical API host |
-| `INFISICAL_CLIENT_ID` + `INFISICAL_CLIENT_SECRET` | yes* | _(machine identity)_ | Universal Auth (*or `INFISICAL_TOKEN`) |
+| `INFISICAL_API_URL` | yes | `https://eu.infisical.com` | Infisical API host |
+| `INFISICAL_CLIENT_ID` + `INFISICAL_CLIENT_SECRET` | yes | _(machine identity)_ | Universal Auth |
 | `DEPLOYMENT_ENVIRONMENT` | recommended | `prod-coolify-host-01` | Per-host resource attribute |
-| Tuning vars | optional | see `.env.example` | Compose defaults cover `HOSTMETRICS_*`, etc. |
 
-Do **not** put `DEPLOYMENT_ENVIRONMENT` in Infisical — it differs per Docker host, and `infisical run` would clobber a Coolify override.
+Do **not** put `DEPLOYMENT_ENVIRONMENT` in Infisical — it differs per Docker host.
 
-Set `INFISICAL_USE_CLI=false` to skip Infisical and inject `SIGNOZ_*` via Coolify directly (escape hatch only).
+`INFISICAL_DISABLE_UPDATE_CHECK=true` is baked into the image. Escape hatches (`INFISICAL_USE_CLI`, `INFISICAL_TOKEN`, `INFISICAL_DOMAIN`, …) are supported by the entrypoint if you set them manually, but you do not need them in Coolify.
 
 ### Application containers (every instrumented app on the same host)
 
@@ -77,13 +79,21 @@ Set these on **app** services — never on the collector.
 ## Collector Coolify setup
 
 1. Create an Infisical project + Universal Auth machine identity with read access.
-2. Add Infisical secrets for the target env slug:
+2. Add Infisical secrets for the target env slug (required + optional tuning):
 
    ```bash
    SIGNOZ_OTLP_ENDPOINT=https://otel.roborew.xyz
    SIGNOZ_HOST=otel.roborew.xyz
    SIGNOZ_INGESTION_KEY=
+   HOSTMETRICS_INTERVAL=60s
+   DOCKER_STATS_INTERVAL=10s
+   DOCKER_STATS_API_VERSION=1.44
+   FILELOG_START_AT=end
+   MEMORY_LIMITER_LIMIT_MIB=4000
+   MEMORY_LIMITER_SPIKE_MIB=800
    ```
+
+   Tuning keys are optional — if omitted, `config.yaml` defaults apply. If present in Infisical, they override.
 
 3. Create a Coolify Docker Compose resource pointing at this repo (`docker-compose.yml`).
 4. Set Coolify env (see [`.env.example`](.env.example)):
@@ -97,7 +107,7 @@ Set these on **app** services — never on the collector.
    DEPLOYMENT_ENVIRONMENT=prod-coolify-host-01
    ```
 
-5. Remove legacy `SIGNOZ_*` from the Coolify env UI (they come from Infisical now).
+5. Remove legacy `SIGNOZ_*` / tuning / unused Infisical alias vars from the Coolify env UI.
 6. Deploy one instance **per Docker host** you want monitored.
 7. Confirm health: `http://localhost:13133` on that host (collector health check).
 
