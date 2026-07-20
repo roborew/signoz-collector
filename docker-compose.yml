@@ -1,7 +1,7 @@
 # Coolify deployment: OpenTelemetry Collector for Docker host monitoring.
 # Deploy one instance per Docker host. Sends telemetry to SigNoz via OTLP/HTTP
-# (HTTPS on 443 through Cloudflare). SIGNOZ_OTLP_ENDPOINT must be a full https:// URL.
-# Set SIGNOZ_HOST (+ optional SIGNOZ_INGESTION_KEY for Cloud) in Coolify env UI.
+# (HTTPS on 443 through Cloudflare). SIGNOZ_* secrets live in Infisical;
+# Coolify only needs INFISICAL_* bootstrap (+ per-host DEPLOYMENT_ENVIRONMENT).
 # Build pack: Docker Compose (uses this file by default). config.yaml is baked
 # into the image via the Dockerfile — do NOT bind-mount it (Coolify remaps
 # relative bind mounts to app storage where the file is missing, which fails).
@@ -24,12 +24,26 @@ services:
     user: "0:0"
     network_mode: host
     environment:
-      # --- SigNoz connection (set in Coolify env UI) ---
-      SIGNOZ_HOST: ${SIGNOZ_HOST:?Set SIGNOZ_HOST — your SigNoz server IP or hostname}
-      SIGNOZ_OTLP_ENDPOINT: ${SIGNOZ_OTLP_ENDPOINT:-https://${SIGNOZ_HOST}}
-      SIGNOZ_INGESTION_KEY: ${SIGNOZ_INGESTION_KEY:-}
-      SIGNOZ_OTLP_INSECURE: ${SIGNOZ_OTLP_INSECURE:-true}
+      # --- Infisical bootstrap (set in Coolify env UI) ---
+      INFISICAL_PROJECT_ID: ${INFISICAL_PROJECT_ID:-}
+      INFISICAL_ENV: ${INFISICAL_ENV:-}
+      INFISICAL_DOMAIN: ${INFISICAL_DOMAIN:-}
+      INFISICAL_API_URL: ${INFISICAL_API_URL:-}
+      INFISICAL_TOKEN: ${INFISICAL_TOKEN:-}
+      INFISICAL_UNIVERSAL_AUTH_CLIENT_ID: ${INFISICAL_UNIVERSAL_AUTH_CLIENT_ID:-}
+      INFISICAL_UNIVERSAL_AUTH_CLIENT_SECRET: ${INFISICAL_UNIVERSAL_AUTH_CLIENT_SECRET:-}
+      INFISICAL_CLIENT_ID: ${INFISICAL_CLIENT_ID:-}
+      INFISICAL_CLIENT_SECRET: ${INFISICAL_CLIENT_SECRET:-}
+      INFISICAL_DISABLE_UPDATE_CHECK: ${INFISICAL_DISABLE_UPDATE_CHECK:-true}
+      INFISICAL_USE_CLI: ${INFISICAL_USE_CLI:-}
+      INFISICAL_RUNTIME: ${INFISICAL_RUNTIME:-}
+      # --- Per-host label (Coolify, not Infisical) ---
       OTEL_RESOURCE_ATTRIBUTES: deployment.environment=${DEPLOYMENT_ENVIRONMENT:-production}
+      # --- Escape hatch: set SIGNOZ_* in Coolify when INFISICAL_USE_CLI=false ---
+      SIGNOZ_HOST: ${SIGNOZ_HOST:-}
+      SIGNOZ_OTLP_ENDPOINT: ${SIGNOZ_OTLP_ENDPOINT:-}
+      SIGNOZ_INGESTION_KEY: ${SIGNOZ_INGESTION_KEY:-}
+      # --- Collector tuning (compose defaults; override in Coolify if needed) ---
       HOSTMETRICS_INTERVAL: ${HOSTMETRICS_INTERVAL:-60s}
       DOCKER_STATS_INTERVAL: ${DOCKER_STATS_INTERVAL:-10s}
       DOCKER_STATS_API_VERSION: ${DOCKER_STATS_API_VERSION:-1.44}
@@ -45,4 +59,4 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 10s
+      start_period: 30s

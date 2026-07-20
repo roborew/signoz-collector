@@ -4,13 +4,15 @@ One OpenTelemetry Collector per Docker host. Collects host metrics, container me
 
 Deploy this stack with Coolify’s Docker Compose build pack. `config.yaml` is baked into the image — do not bind-mount it.
 
+SigNoz connection secrets live in **Infisical**. Coolify only stores Infisical bootstrap variables plus the per-host `DEPLOYMENT_ENVIRONMENT` label.
+
 ## Data flow
 
 ```
 App containers (Coolify, bridge network)
   → http://host.docker.internal:4318  (OTLP/HTTP on the Docker host)
   → signoz-collection-agent (network_mode: host)
-  → https://otel.roborew.xyz          (SIGNOZ_OTLP_ENDPOINT)
+  → https://otel.roborew.xyz          (SIGNOZ_OTLP_ENDPOINT from Infisical)
   → SigNoz
 ```
 
@@ -27,19 +29,32 @@ gRPC on `:4317` is available if your SDK exports gRPC; this guide standardizes o
 
 ## Env var contract
 
-Two namespaces. Do not mix them.
+Three places. Do not mix them.
 
-### Collector (this Coolify resource)
+### Infisical (collector secrets)
 
-Set these on the **collection agent** only (see [`.env.example`](.env.example)).
+Store these in the collector Infisical project (names match runtime env exactly):
 
 | Variable | Required | Example | Role |
 | --- | --- | --- | --- |
 | `SIGNOZ_OTLP_ENDPOINT` | yes | `https://otel.roborew.xyz` | Where **this collector** exports (OTLP/HTTP base URL) |
-| `SIGNOZ_HOST` | yes (compose) | `otel.roborew.xyz` | Hostname / fallback for endpoint default |
+| `SIGNOZ_HOST` | yes | `otel.roborew.xyz` | Hostname / resource attribute |
 | `SIGNOZ_INGESTION_KEY` | no | _(empty)_ | SigNoz Cloud only; leave empty for self-hosted |
-| `DEPLOYMENT_ENVIRONMENT` | recommended | `prod-coolify-host-01` | Host resource attribute (`OTEL_RESOURCE_ATTRIBUTES`) |
-| Tuning vars | optional | see `.env.example` | `HOSTMETRICS_*`, `DOCKER_STATS_*`, `MEMORY_LIMITER_*`, etc. |
+
+### Coolify (this collection-agent resource)
+
+| Variable | Required | Example | Role |
+| --- | --- | --- | --- |
+| `INFISICAL_PROJECT_ID` | yes | _(project ID)_ | Infisical project |
+| `INFISICAL_ENV` | yes | `prod` | Infisical env slug |
+| `INFISICAL_API_URL` or `INFISICAL_DOMAIN` | yes | `https://eu.infisical.com` | Infisical API host |
+| `INFISICAL_CLIENT_ID` + `INFISICAL_CLIENT_SECRET` | yes* | _(machine identity)_ | Universal Auth (*or `INFISICAL_TOKEN`) |
+| `DEPLOYMENT_ENVIRONMENT` | recommended | `prod-coolify-host-01` | Per-host resource attribute |
+| Tuning vars | optional | see `.env.example` | Compose defaults cover `HOSTMETRICS_*`, etc. |
+
+Do **not** put `DEPLOYMENT_ENVIRONMENT` in Infisical — it differs per Docker host, and `infisical run` would clobber a Coolify override.
+
+Set `INFISICAL_USE_CLI=false` to skip Infisical and inject `SIGNOZ_*` via Coolify directly (escape hatch only).
 
 ### Application containers (every instrumented app on the same host)
 
@@ -54,25 +69,43 @@ Set these on **app** services — never on the collector.
 
 **Alignment rules**
 
-- Apps never set `SIGNOZ_*`. Those are collector-only.
+- Apps never set `SIGNOZ_*`. Those are collector-only (via Infisical).
 - Apps never set the public SigNoz URL as `OTEL_EXPORTER_OTLP_ENDPOINT` when using this collector.
 - Prefer Compose/Coolify for the host-local endpoint (not a secret). If the app uses Infisical (`infisical run`), either put `OTEL_*` only in Infisical **or** only in Compose — Infisical exports last and can clobber Compose values.
 - One unique `OTEL_SERVICE_NAME` per process (API, worker, and web are different services).
 
 ## Collector Coolify setup
 
-1. Create a Coolify Docker Compose resource pointing at this repo (`docker-compose.yml`).
-2. Set collector env from [`.env.example`](.env.example), at minimum:
+1. Create an Infisical project + Universal Auth machine identity with read access.
+2. Add Infisical secrets for the target env slug:
 
    ```bash
    SIGNOZ_OTLP_ENDPOINT=https://otel.roborew.xyz
    SIGNOZ_HOST=otel.roborew.xyz
    SIGNOZ_INGESTION_KEY=
+   ```
+
+3. Create a Coolify Docker Compose resource pointing at this repo (`docker-compose.yml`).
+4. Set Coolify env (see [`.env.example`](.env.example)):
+
+   ```bash
+   INFISICAL_PROJECT_ID=
+   INFISICAL_ENV=prod
+   INFISICAL_API_URL=https://eu.infisical.com
+   INFISICAL_CLIENT_ID=
+   INFISICAL_CLIENT_SECRET=
    DEPLOYMENT_ENVIRONMENT=prod-coolify-host-01
    ```
 
-3. Deploy one instance **per Docker host** you want monitored.
-4. Confirm health: `http://localhost:13133` on that host (collector health check).
+5. Remove legacy `SIGNOZ_*` from the Coolify env UI (they come from Infisical now).
+6. Deploy one instance **per Docker host** you want monitored.
+7. Confirm health: `http://localhost:13133` on that host (collector health check).
+
+### Local development
+
+1. `cp .env.example .env` and fill Infisical bootstrap vars.
+2. Install the Infisical CLI (`brew install infisical/get-cli/infisical` on macOS).
+3. Run `make env-pull` — merges Infisical secrets into `.env.local`.
 
 ## App project checklist
 
@@ -140,5 +173,7 @@ Skip Valkey, one-shot migrate jobs, and other non-app sidecars unless you intent
 
 - [`docker-compose.yml`](docker-compose.yml) — Coolify Compose service (`network_mode: host`)
 - [`config.yaml`](config.yaml) — receivers, processors, OTLP/HTTP exporter to SigNoz
-- [`.env.example`](.env.example) — collector Coolify env template + app OTEL contract reminder
+- [`Dockerfile`](Dockerfile) — Debian wrapper + Infisical CLI + baked config
+- [`docker/docker-entrypoint.sh`](docker/docker-entrypoint.sh) — `infisical run` wrapper
+- [`.env.example`](.env.example) — Coolify bootstrap + Infisical secret contract
 - [`templates/container-metrics-coolify.json`](templates/container-metrics-coolify.json) — SigNoz dashboard for Coolify container metrics
