@@ -70,7 +70,7 @@ processors:
   # GDPR / EU PII strip — runs before batch/memory_limiter. Same key set as
   # the home ingester so neither layer leaks client IPs into ClickHouse.
   redaction/pii:
-    allow_all_keys: false
+    allow_all_keys: true
     blocked_key_patterns:
       - ".*client\\.address.*"
       - ".*client\\.ip.*"
