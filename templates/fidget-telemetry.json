@@ -1,0 +1,1334 @@
+{
+  "description": "Fidget trace-backed observability dashboard. Front-End contains browser RUM Web Vital spans only; Fidget Web contains Next.js server spans only; Fidget Ingest contains FastAPI, Celery worker, and Celery beat spans. Fidget currently exports traces rather than HTTP/Celery metrics, so rate and latency panels query traces directly.",
+  "layout": [
+    {
+      "i": "f1000001-0001-4000-8000-000000000011",
+      "x": 0,
+      "y": 0,
+      "w": 6,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000012",
+      "x": 6,
+      "y": 0,
+      "w": 2,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000013",
+      "x": 8,
+      "y": 0,
+      "w": 2,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000014",
+      "x": 10,
+      "y": 0,
+      "w": 2,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000021",
+      "x": 0,
+      "y": 8,
+      "w": 6,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000022",
+      "x": 6,
+      "y": 8,
+      "w": 3,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000023",
+      "x": 9,
+      "y": 8,
+      "w": 3,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000024",
+      "x": 0,
+      "y": 15,
+      "w": 12,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000031",
+      "x": 0,
+      "y": 23,
+      "w": 6,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000032",
+      "x": 6,
+      "y": 23,
+      "w": 3,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000033",
+      "x": 9,
+      "y": 23,
+      "w": 3,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000034",
+      "x": 0,
+      "y": 30,
+      "w": 6,
+      "h": 7,
+      "moved": false,
+      "static": false
+    },
+    {
+      "i": "f1000001-0001-4000-8000-000000000035",
+      "x": 6,
+      "y": 30,
+      "w": 6,
+      "h": 7,
+      "moved": false,
+      "static": false
+    }
+  ],
+  "name": "",
+  "panelMap": {
+    "f1000001-0001-4000-8000-000000000001": {
+      "collapsed": false,
+      "widgets": [
+        {
+          "i": "f1000001-0001-4000-8000-000000000011",
+          "x": 0,
+          "y": 0,
+          "w": 6,
+          "h": 7,
+          "moved": false,
+          "static": false
+        },
+        {
+          "i": "f1000001-0001-4000-8000-000000000012",
+          "x": 6,
+          "y": 0,
+          "w": 2,
+          "h": 7,
+          "moved": false,
+          "static": false
+        },
+        {
+          "i": "f1000001-0001-4000-8000-000000000013",
+          "x": 8,
+          "y": 0,
+          "w": 2,
+          "h": 7,
+          "moved": false,
+          "static": false
+        },
+        {
+          "i": "f1000001-0001-4000-8000-000000000014",
+          "x": 10,
+          "y": 0,
+          "w": 2,
+          "h": 7,
+          "moved": false,
+          "static": false
+        }
+      ]
+    },
+    "f1000001-0001-4000-8000-000000000002": {
+      "collapsed": false,
+      "widgets": [
+        {
+          "i": "f1000001-0001-4000-8000-000000000021",
+          "x": 0,
+          "y": 8,
+          "w": 6,
+          "h": 7,
+          "moved": false,
+          "static": false
+        },
+        {
+          "i": "f1000001-0001-4000-8000-000000000022",
+          "x": 6,
+          "y": 8,
+          "w": 3,
+          "h": 7,
+          "moved": false,
+          "static": false
+        },
+        {
+          "i": "f1000001-0001-4000-8000-000000000023",
+          "x": 9,
+          "y": 8,
+          "w": 3,
+          "h": 7,
+          "moved": false,
+          "static": false
+        },
+        {
+          "i": "f1000001-0001-4000-8000-000000000024",
+          "x": 0,
+          "y": 15,
+          "w": 12,
+          "h": 7,
+          "moved": false,
+          "static": false
+        }
+      ]
+    },
+    "f1000001-0001-4000-8000-000000000003": {
+      "collapsed": false,
+      "widgets": [
+        {
+          "i": "f1000001-0001-4000-8000-000000000031",
+          "x": 0,
+          "y": 23,
+          "w": 6,
+          "h": 7,
+          "moved": false,
+          "static": false
+        },
+        {
+          "i": "f1000001-0001-4000-8000-000000000032",
+          "x": 6,
+          "y": 23,
+          "w": 3,
+          "h": 7,
+          "moved": false,
+          "static": false
+        },
+        {
+          "i": "f1000001-0001-4000-8000-000000000033",
+          "x": 9,
+          "y": 23,
+          "w": 3,
+          "h": 7,
+          "moved": false,
+          "static": false
+        },
+        {
+          "i": "f1000001-0001-4000-8000-000000000034",
+          "x": 0,
+          "y": 30,
+          "w": 6,
+          "h": 7,
+          "moved": false,
+          "static": false
+        },
+        {
+          "i": "f1000001-0001-4000-8000-000000000035",
+          "x": 6,
+          "y": 30,
+          "w": 6,
+          "h": 7,
+          "moved": false,
+          "static": false
+        }
+      ]
+    }
+  },
+  "tags": [
+    "fidget",
+    "opentelemetry",
+    "rum",
+    "apm"
+  ],
+  "title": "Fidget \u2014 Front-End RUM and Back-End Telemetry",
+  "variables": {},
+  "version": "v5",
+  "widgets": [
+    {
+      "id": "f1000001-0001-4000-8000-000000000001",
+      "panelTypes": "row",
+      "title": "Front-End \u2014 Browser RUM / Core Web Vitals"
+    },
+    {
+      "id": "f1000001-0001-4000-8000-000000000002",
+      "panelTypes": "row",
+      "title": "Fidget Web \u2014 Next.js Server"
+    },
+    {
+      "id": "f1000001-0001-4000-8000-000000000003",
+      "panelTypes": "row",
+      "title": "Fidget Ingest \u2014 API, Worker, and Beat"
+    },
+    {
+      "description": "Browser RUM vital spans by type. These are real-user signals emitted after page load and interaction.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000011",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "traces",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "key": "name",
+                  "dataType": "string",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": 100,
+              "orderBy": [
+                {
+                  "columnName": "count()",
+                  "order": "desc"
+                }
+              ],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "expression": "count()"
+                }
+              ],
+              "filter": {
+                "expression": "serviceName = 'fidget-web-rum' AND name IN ('LCP', 'CLS', 'INP', 'TTFB', 'FCP')"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "RUM Web Vitals received",
+      "yAxisUnit": "short",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+      "description": "Largest Contentful Paint from browser spans. Value is milliseconds.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000012",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "value",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "traces",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": 100,
+              "orderBy": [
+                {
+                  "columnName": "avg(value)",
+                  "order": "desc"
+                }
+              ],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "expression": "avg(value)"
+                }
+              ],
+              "filter": {
+                "expression": "serviceName = 'fidget-web-rum' AND name = 'LCP'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "RUM LCP average",
+      "yAxisUnit": "ms",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+      "description": "Interaction to Next Paint from browser spans. Value is milliseconds.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000013",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "value",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "traces",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": 100,
+              "orderBy": [
+                {
+                  "columnName": "avg(value)",
+                  "order": "desc"
+                }
+              ],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "expression": "avg(value)"
+                }
+              ],
+              "filter": {
+                "expression": "serviceName = 'fidget-web-rum' AND name = 'INP'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "RUM INP average",
+      "yAxisUnit": "ms",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+      "description": "Cumulative Layout Shift from browser spans. This is a unitless score.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000014",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "value",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "traces",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": 100,
+              "orderBy": [
+                {
+                  "columnName": "avg(value)",
+                  "order": "desc"
+                }
+              ],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "expression": "avg(value)"
+                }
+              ],
+              "filter": {
+                "expression": "serviceName = 'fidget-web-rum' AND name = 'CLS'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "RUM CLS average",
+      "yAxisUnit": "none",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+      "description": "Next.js server spans per minute. Browser RUM uses the separate fidget-web-rum service.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000021",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "traces",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "key": "name",
+                  "dataType": "string",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": 100,
+              "orderBy": [
+                {
+                  "columnName": "count()",
+                  "order": "desc"
+                }
+              ],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "expression": "count()"
+                }
+              ],
+              "filter": {
+                "expression": "serviceName = 'fidget-web'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Web server span rate",
+      "yAxisUnit": "short",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+      "description": "95th-percentile duration for Next.js server spans. Duration is stored in nanoseconds.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000022",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "value",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "traces",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": 100,
+              "orderBy": [
+                {
+                  "columnName": "quantile(0.95)(durationNano)",
+                  "order": "desc"
+                }
+              ],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "expression": "quantile(0.95)(durationNano)"
+                }
+              ],
+              "filter": {
+                "expression": "serviceName = 'fidget-web'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Web server p95 span duration",
+      "yAxisUnit": "ns",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+      "description": "Next.js server spans marked with OpenTelemetry error status.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000023",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "value",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "traces",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": 100,
+              "orderBy": [
+                {
+                  "columnName": "count()",
+                  "order": "desc"
+                }
+              ],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "expression": "count()"
+                }
+              ],
+              "filter": {
+                "expression": "serviceName = 'fidget-web' AND statusCode = 'STATUS_CODE_ERROR'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Web server error spans",
+      "yAxisUnit": "short",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+      "description": "Top Next.js server span names by volume. Use this to identify the operations behind latency or error changes.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000024",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "table",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+              "dataSource": "traces",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+                  "key": "name",
+                  "dataType": "string",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+              "legend": "",
+              "limit": 20,
+              "orderBy": [
+                {
+                  "columnName": "count()",
+                  "order": "desc"
+                }
+              ],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "expression": "count()"
+                }
+              ],
+              "filter": {
+                "expression": "serviceName = 'fidget-web'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Web server operations",
+      "yAxisUnit": "short",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+"description": "FastAPI requests per second from the explicit Fidget Ingest HTTP counter. This is a metrics-backed panel, not a trace approximation.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000031",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+"dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+"groupBy": [
+                {
+                  "key": "http.request.method",
+                  "dataType": "string",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+"legend": "{{http.request.method}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "fidget.ingest.http.server.requests",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "service.name = 'fidget-ingest-api'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Ingest API request span rate",
+      "yAxisUnit": "short",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+"description": "95th-percentile FastAPI request duration from the explicit Fidget Ingest HTTP histogram.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000032",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "value",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+"dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [],
+              "having": {
+                "expression": ""
+              },
+"legend": "p95",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "fidget.ingest.http.server.duration.bucket",
+                  "temporality": null,
+                  "timeAggregation": "p95",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "service.name = 'fidget-ingest-api'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Ingest API p95 span duration",
+"yAxisUnit": "ms",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+"description": "FastAPI request rate by response status from the explicit Fidget Ingest HTTP counter. Empty response classes render as zero rather than hiding the whole backend panel.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000033",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "value",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+"dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+"groupBy": [
+                {
+                  "key": "http.response.status_code",
+                  "dataType": "string",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+"legend": "{{http.response.status_code}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "fidget.ingest.http.server.requests",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "service.name = 'fidget-ingest-api'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+"title": "Ingest API response status rate",
+      "yAxisUnit": "short",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+"description": "Completed Celery worker tasks from the explicit Fidget Ingest task counter.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000034",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+"dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+"key": "celery.task.name",
+                  "dataType": "string",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+"legend": "{{celery.task.name}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "fidget.ingest.celery.tasks",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "service.name = 'fidget-ingest-worker'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Ingest worker task activity",
+      "yAxisUnit": "short",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    },
+    {
+"description": "Tasks published by Celery Beat from the explicit Fidget Ingest task counter.",
+      "fillSpans": false,
+      "id": "f1000001-0001-4000-8000-000000000035",
+      "isLogScale": false,
+      "isStacked": false,
+      "legendPosition": "bottom",
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "q-serviceName='fid",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "queryType": "builder",
+        "builder": {
+          "queryData": [
+            {
+"dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "functions": [],
+              "groupBy": [
+                {
+"key": "celery.task.name",
+                  "dataType": "string",
+                  "type": "tag"
+                }
+              ],
+              "having": {
+                "expression": ""
+              },
+"legend": "{{celery.task.name}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "stepInterval": 60,
+              "aggregations": [
+                {
+                  "metricName": "fidget.ingest.celery.tasks",
+                  "temporality": null,
+                  "timeAggregation": "rate",
+                  "spaceAggregation": "sum",
+                  "reduceTo": "avg"
+                }
+              ],
+              "filter": {
+                "expression": "service.name = 'fidget-ingest-beat'"
+              }
+            }
+          ],
+          "queryFormulas": []
+        }
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Ingest beat task publishing",
+      "yAxisUnit": "short",
+      "columnUnits": {},
+      "customLegendColors": {},
+      "contextLinks": {
+        "linksData": []
+      }
+    }
+  ]
+}
