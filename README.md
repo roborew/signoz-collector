@@ -12,7 +12,7 @@ SigNoz connection secrets live in **Infisical**. Coolify only stores Infisical b
 App containers (Coolify, bridge network)
   → http://host.docker.internal:4318  (OTLP/HTTP on the Docker host)
   → signoz-collection-agent (network_mode: host)
-  → https://otel.roborew.xyz          (SIGNOZ_OTLP_ENDPOINT from Infisical)
+  → https://otel.domain.tld          (SIGNOZ_OTLP_ENDPOINT from Infisical)
   → SigNoz
 ```
 
@@ -82,7 +82,7 @@ Set these on **app** services — never on the collector.
 2. Add Infisical secrets for the target env slug (required + optional tuning):
 
    ```bash
-   SIGNOZ_OTLP_ENDPOINT=https://otel.roborew.xyz
+   SIGNOZ_OTLP_ENDPOINT=https://otel.domain.tld
    SIGNOZ_HOST=otel.roborew.xyz
    SIGNOZ_INGESTION_KEY=
    HOSTMETRICS_INTERVAL=60s
